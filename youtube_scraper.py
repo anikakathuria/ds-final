@@ -2,7 +2,7 @@ from googleapiclient.discovery import build
 import pandas as pd
 import time
 
-API_KEY = "AIzaSyAib-9WLNyc0LpxE5A4u8yjEyGH1TgS2ps"  # Replace with your own YouTube Data API v3 key
+API_KEY = "" #contact me for the API key
 youtube = build("youtube", "v3", developerKey=API_KEY)
 
 SEARCH_TERMS = ["climate change", "global warming", "climate crisis", "climate action", "carbon emissions"]
