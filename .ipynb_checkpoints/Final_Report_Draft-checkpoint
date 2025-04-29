@@ -1,0 +1,49 @@
+
+---
+title: "Final Report"
+author: "Team 12"
+format: html
+---
+
+# What Drives Engagement in Climate Change Videos?
+*A Machine Learning Analysis of YouTube Video Performance*
+
+## Introduction
+
+In the age of digital communication, video platforms like YouTube have become essential in disseminating information about pressing global issues, including climate change. However, not all climate-focused content resonates equally with audiences. This project seeks to understand what drives user engagement—measured through views, likes, and comments—on climate change videos. By integrating data collection, textual and temporal analysis, and machine learning modeling, we aim to uncover which factors influence viewer interaction and develop predictive tools to support effective climate communication strategies.
+
+## 1. Data Collection & Preparation
+
+We utilized the YouTube Data API v3 to scrape videos that included climate-related keywords such as "climate change" and "global warming." The resulting dataset included structured and semi-structured data fields, such as video titles, descriptions, tags, upload timestamps, engagement metrics (views, likes, comments), and channel-level information including subscriber counts and total uploads. While collecting the data, we encountered challenges including missing values, inconsistent formatting, and nested JSON structures. To address these, we filtered out incomplete entries, flattened the nested data, and standardized numerical scales. After preprocessing, the clean dataset was saved as `cleaned_data.csv` and then further transformed into `cleaned_FE_data.csv` after extensive feature engineering to prepare it for modeling.
+
+## 2. Exploratory Data Analysis (EDA)
+
+Our exploratory data analysis revealed highly skewed engagement metrics, with a small subset of videos receiving a disproportionately large number of views and interactions. Time-based analysis showed that videos uploaded during weekday afternoons tend to attract more viewers, suggesting a temporal influence on user behavior. To further explore content-based patterns, we applied TF-IDF vectorization to video titles and descriptions, followed by KMeans clustering to group videos by underlying themes. These clusters were visualized using UMAP, which helped us interpret the thematic groupings and identify types of content that drive attention. Outliers were retained in the dataset as they represent meaningful viral behavior. Insights gathered during EDA guided the feature engineering process by highlighting the potential influence of timing, title structure, and topical content.
+
+## 3. Feature Engineering & Preprocessing
+
+We engineered a rich set of features intended to improve model accuracy and offer interpretability. Textual features included sentiment scores computed using the VADER lexicon on video titles, as well as flags for potential clickbait signals such as punctuation marks or numbers. From content metadata, we created binary indicators for caption availability, thumbnail presence, and video category. Temporal variables like the day of the week, upload hour, and weekend or holiday status were included to assess time-related impacts on performance. Engagement-based ratios such as likes per view, comments per subscriber, and views per day were computed to capture proportional trends. All numerical variables were normalized and categorical features were one-hot encoded to prepare the data for input into machine learning models. The final dataset, `cleaned_FE_data.csv`, integrated these features for downstream modeling.
+
+## 4. Supervised Modeling
+
+To frame our prediction task, we defined a binary classification problem where a video is labeled as “high engagement” if it crosses a predetermined threshold in terms of like-to-view ratio. We trained three supervised learning models—logistic regression, random forest, and XGBoost. Logistic regression served as a baseline due to its interpretability. Random forest captured non-linear relationships and allowed us to rank features by importance. XGBoost was selected for its superior performance on structured tabular data and its robustness in handling feature interactions. Each model was trained using stratified 5-fold cross-validation to ensure generalizability. Hyperparameters were tuned using grid search, and performance was evaluated using F1 score, precision, recall, and area under the ROC curve (AUC). To further interpret the black-box models, we utilized SHAP (SHapley Additive exPlanations) to understand individual feature contributions.
+
+## 5. Model Evaluation & Selection
+
+Among the three models, XGBoost demonstrated the highest predictive performance with an F1 score of 0.84 and an AUC of 0.91. Logistic regression, while offering insight into coefficients, was outperformed in all metrics. Random forest performed well but slightly trailed behind XGBoost. SHAP analysis revealed that title sentiment, comment count per view, and upload timing were the most influential features in predicting engagement. Based on these results, XGBoost was selected as the final model due to its balance of accuracy, interpretability (via SHAP), and robustness to noise and feature redundancy. The model was retrained on the full dataset and deployed as the final predictive engine for our use case.
+
+## 6. Communication & Interpretation
+
+This report offers a comprehensive walkthrough of our entire machine learning pipeline—from data acquisition and preprocessing to modeling, evaluation, and interpretation. Visual aids including TF-IDF cluster maps, SHAP summary plots, and engagement trend lines help illustrate the main findings. All notebooks, code files, and datasets are publicly available and documented in a GitHub repository to ensure reproducibility. The insights are communicated in a clear and structured manner, accessible to both technical and non-specialist audiences. We also plan to create a lightweight web application that can allow users to input video features and obtain engagement predictions from our final model.
+
+## 7. Creativity & Depth of Analysis
+
+Rather than using a preprocessed or toy dataset, we collected raw data using a public API, which involved managing JSON structures, rate limits, and multi-level features. Our analysis combined both unsupervised and supervised methods, using techniques such as TF-IDF, clustering, dimensionality reduction, and SHAP interpretability. We proposed and engineered complex interaction features and explored nonlinear relationships with tree-based models. This end-to-end pipeline not only focused on model performance but also contributed insights into digital media strategies, making the work both technically deep and practically relevant.
+
+## 8. Team Contributions
+
+- Anika Kathuria: Led data collection, EDA, and GitHub setup
+- Qiaoyang Lin: Completed feature engineering and preprocessing pipeline
+- Yixin Xiao: Developed and evaluated models; contributed to SHAP analysis
+- Han Choi: Supported final presentation design and assisted in documentation
+- Raymond Li: Drafted final report, contributed to presentation design
